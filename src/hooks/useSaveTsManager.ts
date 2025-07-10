@@ -5,7 +5,6 @@ import { useToast } from '@/hooks/use-toast';
 
 export const useSaveTsManager = () => {
   const [showSaveTsDialog, setShowSaveTsDialog] = useState(false);
-  const [locationInput, setLocationInput] = useState('Documents/timestamps.txt');
   const [antidelayInput, setAntidelayInput] = useState('15');
   const [saveTsButtonPressed, setSaveTsButtonPressed] = useState(false);
   
@@ -61,8 +60,8 @@ export const useSaveTsManager = () => {
       console.log('💾 SaveTsManager: File content to write:', fileContent);
       console.log('💾 SaveTsManager: File content length:', fileContent.length);
       
-      // Always save to Documents directory for short press (accessible without SAF)
-      const fileName = locationInput.split('/').pop() || 'timestamps.txt';
+      // Always save to Documents directory (accessible without SAF)
+      const fileName = 'timestamps.txt';
       console.log('💾 SaveTsManager: Saving to Documents directory with filename:', fileName);
       
       try {
@@ -106,40 +105,6 @@ export const useSaveTsManager = () => {
     // Only clear on mouse up or touch end
   };
 
-  // File browser handler
-  const handleBrowseFile = () => {
-    console.log('💾 SaveTsManager: Browse file button clicked');
-    
-    // Create a hidden file input element
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = '.txt';
-    fileInput.style.display = 'none';
-    
-    fileInput.onchange = (event) => {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (file) {
-        console.log('💾 SaveTsManager: File browser - original file object:', file);
-        console.log('💾 SaveTsManager: File browser - file.name:', file.name);
-        console.log('💾 SaveTsManager: File browser - file.webkitRelativePath:', file.webkitRelativePath);
-        
-        // Extract directory from current location and append the new filename
-        const currentPath = locationInput;
-        const lastSlashIndex = currentPath.lastIndexOf('/');
-        const directoryPath = lastSlashIndex > -1 ? currentPath.substring(0, lastSlashIndex + 1) : 'Documents/';
-        const newPath = directoryPath + file.name;
-        
-        setLocationInput(newPath);
-        console.log('💾 SaveTsManager: File selected and locationInput updated to:', newPath);
-      } else {
-        console.log('💾 SaveTsManager: File browser - no file selected');
-      }
-    };
-    
-    document.body.appendChild(fileInput);
-    fileInput.click();
-    document.body.removeChild(fileInput);
-  };
 
   // Save Ts dialog handlers
   const handleSaveTsSubmit = () => {
@@ -154,15 +119,12 @@ export const useSaveTsManager = () => {
 
   return {
     showSaveTsDialog,
-    locationInput,
-    setLocationInput,
     antidelayInput,
     setAntidelayInput,
     saveTsButtonPressed,
     handleSaveTsMouseDown,
     handleSaveTsMouseUp,
     handleSaveTsMouseLeave,
-    handleBrowseFile,
     handleSaveTsSubmit,
     handleSaveTsCancel
   };

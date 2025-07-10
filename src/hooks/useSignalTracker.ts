@@ -29,15 +29,12 @@ export const useSignalTracker = () => {
 
   const {
     showSaveTsDialog,
-    locationInput,
-    setLocationInput,
     antidelayInput: saveTsAntidelayInput,
     setAntidelayInput: setSaveTsAntidelayInput,
     saveTsButtonPressed,
     handleSaveTsMouseDown,
     handleSaveTsMouseUp,
     handleSaveTsMouseLeave,
-    handleBrowseFile,
     handleSaveTsSubmit: originalHandleSaveTsSubmit,
     handleSaveTsCancel
   } = useSaveTsManager();
@@ -62,15 +59,12 @@ export const useSignalTracker = () => {
     setAntidelayInput,
     antidelaySeconds,
     showSaveTsDialog,
-    locationInput,
-    setLocationInput,
     saveTsAntidelayInput,
     setSaveTsAntidelayInput,
     handleSaveSignals,
     handleSaveTsMouseDown: handleSaveTsMouseDownWithSignals,
     handleSaveTsMouseUp: handleSaveTsMouseUpWithSignals,
     handleSaveTsMouseLeave,
-    handleBrowseFile,
     handleSaveTsSubmit: originalHandleSaveTsSubmit,
     handleSaveTsCancel,
     handleAntidelaySubmit,

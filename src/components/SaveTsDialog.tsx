@@ -9,26 +9,20 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { FileText, FolderOpen } from 'lucide-react';
+import { FileText } from 'lucide-react';
 
 interface SaveTsDialogProps {
   open: boolean;
-  locationValue: string;
   antidelayValue: string;
-  onLocationChange: (value: string) => void;
   onAntidelayChange: (value: string) => void;
-  onBrowseFile: () => void;
   onSave: () => void;
   onCancel: () => void;
 }
 
 const SaveTsDialog = ({
   open,
-  locationValue,
   antidelayValue,
-  onLocationChange,
   onAntidelayChange,
-  onBrowseFile,
   onSave,
   onCancel
 }: SaveTsDialogProps) => {
@@ -41,23 +35,10 @@ const SaveTsDialog = ({
         
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="location">File Location</Label>
-            <div className="flex gap-2">
-              <Input
-                id="location"
-                placeholder="e.g., Documents/timestamps.txt or Download/my-file.txt"
-                value={locationValue}
-                onChange={(e) => onLocationChange(e.target.value)}
-                className="flex-1"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onBrowseFile}
-                className="shrink-0"
-              >
-                <FolderOpen className="h-4 w-4" />
-              </Button>
+            <Label>File Location</Label>
+            <div className="flex items-center gap-2 p-3 bg-muted rounded-md">
+              <FileText className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm">Documents/timestamps.txt</span>
             </div>
           </div>
           

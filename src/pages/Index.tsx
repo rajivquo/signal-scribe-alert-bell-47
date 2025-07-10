@@ -16,15 +16,12 @@ const Index = () => {
     setAntidelayInput,
     antidelaySeconds,
     showSaveTsDialog,
-    locationInput,
-    setLocationInput,
     saveTsAntidelayInput,
     setSaveTsAntidelayInput,
     handleSaveSignals,
     handleSaveTsMouseDown,
     handleSaveTsMouseUp,
     handleSaveTsMouseLeave,
-    handleBrowseFile,
     handleSaveTsSubmit,
     handleSaveTsCancel,
     handleAntidelaySubmit,
@@ -60,11 +57,8 @@ const Index = () => {
 
       <SaveTsDialog
         open={showSaveTsDialog}
-        locationValue={locationInput}
         antidelayValue={saveTsAntidelayInput}
-        onLocationChange={setLocationInput}
         onAntidelayChange={setSaveTsAntidelayInput}
-        onBrowseFile={handleBrowseFile}
         onSave={handleSaveTsSubmit}
         onCancel={handleSaveTsCancel}
       />
