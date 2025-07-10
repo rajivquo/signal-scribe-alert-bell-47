@@ -42,11 +42,10 @@ export const useSaveTsManager = () => {
       longPressTimerRef.current = null;
     }
     
-    // If it wasn't a long press, write to Android file system
+    // If it wasn't a long press, save directly to Documents directory
     if (!isLongPressRef.current) {
-      console.log('💾 SaveTsManager: Short press detected - writing to Android file system');
+      console.log('💾 SaveTsManager: Short press detected - saving directly to Documents directory');
       console.log('💾 SaveTsManager: Input signalsText:', signalsText);
-      console.log('💾 SaveTsManager: Current locationInput:', locationInput);
       console.log('💾 SaveTsManager: Current antidelayInput:', antidelayInput);
       
       // Extract timestamps and process them
@@ -62,62 +61,31 @@ export const useSaveTsManager = () => {
       console.log('💾 SaveTsManager: File content to write:', fileContent);
       console.log('💾 SaveTsManager: File content length:', fileContent.length);
       
-      // Write to Android file system (overwrite existing file)
-      console.log('💾 SaveTsManager: Attempting to write to file at path:', locationInput);
+      // Always save to Documents directory for short press (accessible without SAF)
+      const fileName = locationInput.split('/').pop() || 'timestamps.txt';
+      console.log('💾 SaveTsManager: Saving to Documents directory with filename:', fileName);
       
       try {
-        // First check if we have permissions
-        const permissions = await Filesystem.checkPermissions();
-        console.log('💾 SaveTsManager: Current permissions:', permissions);
-        
-        if (permissions.publicStorage !== 'granted') {
-          console.log('💾 SaveTsManager: Requesting permissions...');
-          const requestResult = await Filesystem.requestPermissions();
-          console.log('💾 SaveTsManager: Permission request result:', requestResult);
-          
-          if (requestResult.publicStorage !== 'granted') {
-            console.log('💾 SaveTsManager: Permission denied, trying Documents directory');
-            
-            // Try using Documents directory instead
-            await Filesystem.writeFile({
-              path: `Documents/${locationInput.split('/').pop()}`,
-              data: fileContent,
-              directory: Directory.Documents,
-              encoding: Encoding.UTF8
-            });
-            
-            toast({
-              title: "File saved successfully",
-              description: `Saved to Documents/${locationInput.split('/').pop()} due to permission restrictions`,
-            });
-            
-            console.log('💾 SaveTsManager: File written successfully to Documents directory');
-            return;
-          }
-        }
-
-        // Try to write to the requested path
         await Filesystem.writeFile({
-          path: locationInput,
+          path: fileName,
           data: fileContent,
-          directory: Directory.ExternalStorage,
+          directory: Directory.Documents,
           encoding: Encoding.UTF8
         });
         
         toast({
           title: "File saved successfully",
-          description: `Saved to ${locationInput}`,
+          description: `Saved to Documents/${fileName}`,
         });
         
-        console.log('💾 SaveTsManager: File written successfully to:', locationInput);
-        console.log('💾 SaveTsManager: Write operation completed successfully');
+        console.log('💾 SaveTsManager: File written successfully to Documents directory:', fileName);
         
       } catch (error) {
-        console.error('💾 SaveTsManager: Error writing file to Android:', error);
+        console.error('💾 SaveTsManager: Error writing file to Documents:', error);
         console.error('💾 SaveTsManager: Error details:', {
           message: error.message,
           stack: error.stack,
-          path: locationInput,
+          fileName: fileName,
           antidelay: antidelayInput
         });
         
