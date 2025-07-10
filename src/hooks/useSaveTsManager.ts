@@ -66,6 +66,9 @@ export const useSaveTsManager = () => {
       console.log('💾 SaveTsManager: Saving to Documents directory with filename:', fileName);
       
       try {
+        // Force short delay to ensure permissions are stable
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         await Filesystem.writeFile({
           path: fileName,
           data: fileContent,
